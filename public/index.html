@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0612">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Halloween NKM">
+<title>HALLOWEEN NKM 🎃 — A Noite Mais Assustadora do Ano</title>
+<meta name="description" content="Halloween NKM — noite de FUNK & HOUSE com experiência temática. 30 de Outubro, a partir das 21h. Prof. Brandão Nº 51, Alto da VX.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0612; --bg2:#150b24; --purple:#7b2ff7; --orange:#ff7518;
+  --orange-glow:#ffa04d; --green:#39ff8e; --red:#ff5b5b;
+  --text:#f3eefc; --muted:#b9a8d6;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+button,a,summary,.gender-card,.lt-chip,.copy-btn{touch-action:manipulation}
+::selection{background:var(--orange);color:#000}
+
+.fog{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.55;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(123,47,247,.18), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 80% 20%, rgba(255,117,24,.10), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(57,255,142,.06), transparent 60%);
+  animation:fogMove 18s ease-in-out infinite alternate}
+@keyframes fogMove{0%{transform:translateX(-3%) scale(1)}100%{transform:translateX(3%) scale(1.06)}}
+
+.floater{position:fixed;pointer-events:none;z-index:1;filter:drop-shadow(0 0 12px rgba(255,117,24,.6));animation:floaty 7s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-28px) rotate(8deg)}}
+
+header{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 5vw;padding-left:max(5vw, env(safe-area-inset-left));padding-right:max(5vw, env(safe-area-inset-right));
+  background:rgba(10,6,18,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(123,47,247,.25)}
+.logo{font-family:'Creepster',cursive;font-size:1.5rem;letter-spacing:2px;color:var(--orange);text-shadow:0 0 14px rgba(255,117,24,.8);white-space:nowrap}
+nav{display:flex;gap:22px}
+nav a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color .25s;white-space:nowrap}
+nav a:hover{color:var(--orange-glow)}
+@media(max-width:760px){
+  nav{display:flex;gap:16px;overflow-x:auto;max-width:56vw;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  nav::-webkit-scrollbar{display:none}
+  nav a{font-size:.68rem;letter-spacing:1px}
+  .logo{font-size:1.15rem}
+}
+
+main{position:relative;z-index:2}
+section{padding:110px 6vw;max-width:1100px;margin:0 auto}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:120px}
+.hero h1{font-family:'Creepster',cursive;font-size:clamp(3rem,11vw,7.5rem);line-height:1;letter-spacing:4px;color:var(--orange);
+  text-shadow:0 0 20px rgba(255,117,24,.75),0 0 60px rgba(123,47,247,.6);animation:pulseGlow 3.2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{text-shadow:0 0 20px rgba(255,117,24,.75),0 0 60px rgba(123,47,247,.55)}
+  50%{text-shadow:0 0 34px rgba(255,117,24,.95),0 0 90px rgba(123,47,247,.85)}}
+.tagline{margin-top:18px;font-size:clamp(1rem,2.6vw,1.5rem);font-weight:800;letter-spacing:6px;text-transform:uppercase;
+  color:var(--green);text-shadow:0 0 16px rgba(57,255,142,.55)}
+.hero p.sub{margin-top:26px;max-width:640px;color:var(--muted);font-size:1.05rem}
+.hero p.sub strong{color:var(--text)}
+
+.info-chips{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:38px}
+.chip{display:flex;align-items:center;gap:10px;background:rgba(123,47,247,.12);border:1px solid rgba(123,47,247,.4);
+  border-radius:100px;padding:10px 20px;font-weight:700;font-size:.9rem}
+.chip .ico{font-size:1.2rem}
+
+.countdown{display:flex;gap:16px;justify-content:center;margin-top:44px;flex-wrap:wrap}
+.cd-box{min-width:86px;padding:16px 10px;border-radius:16px;
+  background:linear-gradient(160deg,rgba(123,47,247,.25),rgba(20,10,35,.9));
+  border:1px solid rgba(255,117,24,.45);
+  box-shadow:0 0 24px rgba(123,47,247,.35), inset 0 0 18px rgba(255,117,24,.08)}
+.cd-box .num{font-size:2rem;font-weight:900;color:var(--orange-glow)}
+.cd-box .lbl{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+.cta-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:44px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 34px;border-radius:100px;font-weight:800;font-size:1rem;
+  letter-spacing:1px;text-decoration:none;text-transform:uppercase;transition:transform .2s, box-shadow .2s;cursor:pointer;border:none;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,var(--orange),#ff4d00);color:#1a0b00;box-shadow:0 0 26px rgba(255,117,24,.55)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 40px rgba(255,117,24,.85)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-ghost{background:transparent;color:var(--text);border:2px solid var(--purple)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange-glow);transform:translateY(-3px)}
+.btn-sm{padding:10px 22px;font-size:.85rem}
+
+.scroll-hint{margin-top:60px;color:var(--muted);font-size:2rem;animation:bounce 1.8s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(12px)}}
+
+.section-tag{display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;
+  color:var(--green);border:1px solid rgba(57,255,142,.4);border-radius:100px;padding:6px 16px;margin-bottom:16px}
+h2{font-family:'Creepster',cursive;font-size:clamp(2.2rem,6vw,3.6rem);letter-spacing:3px;
+  color:var(--orange);text-shadow:0 0 18px rgba(255,117,24,.5);margin-bottom:14px}
+.section-desc{color:var(--muted);max-width:620px;margin-bottom:48px}
+
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.about-card{background:linear-gradient(160deg,rgba(123,47,247,.14),rgba(21,11,36,.9));
+  border:1px solid rgba(123,47,247,.35);border-radius:20px;padding:30px;
+  transition:transform .3s, box-shadow .3s, border-color .3s}
+.about-card:hover{transform:translateY(-8px);border-color:var(--orange);box-shadow:0 14px 40px rgba(255,117,24,.22)}
+.about-card .ico{font-size:2.4rem;display:block;margin-bottom:14px}
+.about-card h3{font-size:1.05rem;font-weight:800;margin-bottom:8px;color:var(--orange-glow)}
+.about-card p{color:var(--muted);font-size:.92rem}
+
+.lineup{display:flex;flex-direction:column;gap:22px}
+.artist{display:flex;align-items:center;gap:24px;
+  background:linear-gradient(90deg,rgba(255,117,24,.14),rgba(123,47,247,.10));
+  border:1px solid rgba(255,117,24,.4);border-radius:20px;padding:28px 32px;
+  transition:transform .3s, box-shadow .3s}
+.artist:hover{transform:translateX(10px);box-shadow:0 0 34px rgba(255,117,24,.3)}
+.artist .dj-ico{font-size:2.8rem}
+.artist h3{font-size:clamp(1.4rem,4vw,2rem);font-weight:900;color:var(--text)}
+.artist span{color:var(--green);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.85rem}
+
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.feature{display:flex;gap:14px;align-items:flex-start;background:rgba(21,11,36,.8);
+  border:1px solid rgba(123,47,247,.3);border-radius:16px;padding:20px}
+.feature .ico{font-size:1.6rem}
+.feature p{font-size:.92rem;color:var(--text);font-weight:600}
+
+.marquee{overflow:hidden;white-space:nowrap;padding:16px 0;border-top:1px solid rgba(255,117,24,.3);
+  border-bottom:1px solid rgba(255,117,24,.3);background:rgba(255,117,24,.06)}
+.marquee span{display:inline-block;font-family:'Creepster',cursive;font-size:1.6rem;letter-spacing:4px;color:var(--orange);animation:marquee 18s linear infinite}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.buy-panel{background:linear-gradient(160deg,rgba(123,47,247,.18),rgba(10,6,18,.95));
+  border:1px solid rgba(255,117,24,.5);border-radius:28px;padding:56px 8vw;
+  box-shadow:0 0 60px rgba(123,47,247,.3);text-align:center}
+.buy-panel h3{font-size:clamp(1.2rem,3.5vw,1.8rem);font-weight:900;margin-bottom:10px}
+.buy-panel p{color:var(--muted);margin-bottom:30px}
+.price-note{color:var(--orange-glow);font-weight:700;margin-bottom:22px}
+
+.steps{list-style:none;display:grid;gap:14px;max-width:520px;margin:34px auto 0;text-align:left}
+.steps li{display:flex;gap:14px;align-items:flex-start;color:var(--text);font-size:.95rem;
+  background:rgba(123,47,247,.1);border-radius:12px;padding:14px 18px}
+.steps li b{color:var(--orange-glow)}
+.step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--orange);color:#1a0b00;
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(5,2,10,.85);backdrop-filter:blur(6px);z-index:100;
+  display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid rgba(255,117,24,.5);border-radius:24px;max-width:520px;width:100%;
+  max-height:92vh;overflow-y:auto;padding:36px;position:relative;box-shadow:0 0 60px rgba(123,47,247,.4)}
+.modal-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--muted);font-size:1.8rem;cursor:pointer}
+.modal-close:hover{color:var(--orange)}
+.modal h3{font-family:'Creepster',cursive;letter-spacing:2px;color:var(--orange);font-size:1.8rem;margin-bottom:6px}
+.modal .sub{color:var(--muted);font-size:.9rem;margin-bottom:24px}
+
+.field{margin-bottom:16px;text-align:left}
+.field label{display:block;font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;background:rgba(10,6,18,.9);border:1px solid rgba(123,47,247,.4);border-radius:12px;
+  padding:13px 16px;color:var(--text);font-family:inherit;font-size:.95rem;outline:none;transition:border-color .2s}
+.field input:focus{border-color:var(--orange)}
+
+.pix-box{background:rgba(10,6,18,.85);border:1px dashed rgba(57,255,142,.5);border-radius:18px;padding:24px;text-align:center;margin:20px 0}
+.pix-box .lbl{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.pix-box .key{font-size:1.15rem;font-weight:900;color:var(--green);letter-spacing:1px;margin-top:6px;word-break:break-all}
+.pix-box img{background:#fff;border-radius:14px;padding:12px;margin:18px auto 4px;display:block;max-width:250px;width:100%}
+.alt-pix{background:rgba(10,6,18,.85);border:1px solid rgba(255,117,24,.45);border-radius:18px;padding:20px;margin:18px 0;text-align:center}
+.alt-pix .lbl{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--orange)}
+.alt-pix .key-row{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.alt-pix code{font-size:1.1rem;font-weight:900;color:var(--orange-glow);letter-spacing:1px;background:rgba(255,117,24,.1);padding:9px 16px;border-radius:10px;word-break:break-all}
+
+.gender-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.gender-card{
+  background:rgba(21,11,36,.8);border:2px solid rgba(123,47,247,.35);border-radius:16px;
+  padding:18px 12px;text-align:center;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text)
+}
+.gender-card:hover{transform:translateY(-2px)}
+.gender-card.selected{border-color:var(--orange);background:rgba(255,117,24,.12);box-shadow:0 0 20px rgba(255,117,24,.25)}
+.gender-card .g-ico{font-size:2rem;display:block;margin-bottom:6px}
+.gender-card .g-name{font-weight:900;font-size:.95rem}
+.gender-card .g-price{color:var(--orange-glow);font-weight:900;font-size:1.15rem;margin-top:2px}
+.gender-card .g-price small{font-size:.65rem;color:var(--muted);font-weight:600;display:block}
+.copy-box{background:rgba(10,6,18,.9);border:1px solid rgba(123,47,247,.35);border-radius:10px;padding:12px;
+  font-size:.72rem;color:var(--muted);word-break:break-all;text-align:left;max-height:88px;overflow-y:auto}
+.copy-btn{margin-top:10px;width:100%;background:rgba(57,255,142,.12);border:1px solid var(--green);color:var(--green);
+  border-radius:10px;padding:10px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:1px}
+.copy-btn:hover{background:rgba(57,255,142,.25)}
+
+.ticket-code-banner{background:rgba(123,47,247,.15);border:1px solid var(--purple);border-radius:14px;
+  padding:14px;margin:18px 0;text-align:center}
+.ticket-code-banner .lbl{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.ticket-code-banner .code{font-size:1.4rem;font-weight:900;letter-spacing:3px;color:var(--text)}
+
+.status-pill{display:inline-block;padding:8px 20px;border-radius:100px;font-weight:800;font-size:.8rem;letter-spacing:2px}
+.status-pending{color:var(--orange-glow);background:rgba(255,117,24,.15);border:1px solid var(--orange)}
+.status-paid{color:var(--green);background:rgba(57,255,142,.15);border:1px solid var(--green)}
+.status-used{color:var(--red);background:rgba(255,91,91,.15);border:1px solid var(--red)}
+
+#meu-ingresso .lookup{max-width:560px;margin:0 auto}
+.lookup-row{display:flex;gap:12px}
+.lookup-row input{flex:1;background:rgba(10,6,18,.9);border:1px solid rgba(123,47,247,.4);border-radius:100px;
+  padding:15px 24px;color:var(--text);font-family:inherit;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;outline:none}
+.lookup-row input:focus{border-color:var(--orange)}
+.ticket-card{background:linear-gradient(160deg,rgba(123,47,247,.18),rgba(21,11,36,.95));border:1px solid rgba(255,117,24,.5);
+  border-radius:24px;padding:36px;text-align:center;margin-top:28px;display:none}
+.ticket-card.show{display:block}
+.ticket-card .qr-wrap{background:#fff;border-radius:18px;padding:18px;display:inline-block;margin:22px 0}
+.ticket-card .qr-wrap img{display:block;max-width:260px;width:100%}
+.ticket-card .who{color:var(--muted);margin-top:6px;font-weight:600}
+
+.rules{display:grid;gap:14px;max-width:720px}
+.rule{display:flex;gap:16px;align-items:flex-start;background:rgba(21,11,36,.8);border-left:4px solid var(--orange);
+  border-radius:0 14px 14px 0;padding:18px 22px;color:var(--text);font-size:.95rem}
+.rule.warn{border-left-color:var(--red)}
+.rule.ok{border-left-color:var(--green)}
+.rule .ico{font-size:1.3rem}
+
+footer{text-align:center;padding:60px 6vw 40px;padding-bottom:calc(40px + env(safe-area-inset-bottom));border-top:1px solid rgba(123,47,247,.25)}
+footer .f-logo{font-family:'Creepster',cursive;font-size:2rem;letter-spacing:3px;color:var(--orange)}
+footer p{color:var(--muted);font-size:.85rem;margin-top:10px}
+footer .quote{font-style:italic;color:var(--green);margin-top:18px}
+footer .socials{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+footer .socials a{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1px solid rgba(255,255,255,.16);border-radius:999px;color:var(--text);text-decoration:none;font-size:.85rem;transition:.2s}
+footer .socials a:hover{border-color:var(--green);background:rgba(46,213,115,.08);transform:translateY(-2px)}
+footer .socials a svg{width:18px;height:18px;flex:none}
+footer .socials a.ig:hover{border-color:#e1306c;color:#e1306c;background:rgba(225,48,108,.08);box-shadow:0 4px 18px rgba(225,48,108,.22)}
+footer .socials a.wa:hover{border-color:#25d366;color:#25d366;background:rgba(37,211,102,.08);box-shadow:0 4px 18px rgba(37,211,102,.22)}
+footer .social-label{display:block;color:var(--muted);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;margin-top:26px}
+
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);z-index:200;
+  background:var(--bg2);border:1px solid var(--orange);color:var(--text);border-radius:14px;padding:14px 26px;
+  font-weight:700;font-size:.9rem;transition:transform .35s ease;max-width:90vw;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.6)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.error{border-color:var(--red)}
+#toast.success{border-color:var(--green)}
+
+.spinner{width:44px;height:44px;border:4px solid rgba(255,117,24,.25);border-top-color:var(--orange);
+  border-radius:50%;animation:spin 1s linear infinite;margin:30px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.checklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.check-item{display:flex;gap:16px;align-items:flex-start;background:rgba(21,11,36,.8);
+  border:1px solid rgba(123,47,247,.3);border-radius:16px;padding:20px}
+.check-item .ico{font-size:1.7rem}
+.check-item h4{font-size:.98rem;font-weight:800;margin-bottom:4px;color:var(--orange-glow)}
+.check-item p{font-size:.85rem;color:var(--muted)}
+
+.local-card{background:linear-gradient(160deg,rgba(123,47,247,.18),rgba(10,6,18,.95));
+  border:1px solid rgba(255,117,24,.5);border-radius:28px;padding:48px 8vw;text-align:center}
+.local-card .big-ico{font-size:3.4rem;display:block;margin-bottom:14px}
+.local-card h3{font-size:clamp(1.3rem,4vw,2rem);font-weight:900;margin-bottom:8px}
+.local-card p{color:var(--muted);max-width:520px;margin:0 auto}
+.local-addr{font-size:clamp(1.1rem,3vw,1.5rem);font-weight:900;color:var(--text);margin:18px 0 4px}
+
+.faq details{background:rgba(21,11,36,.8);border:1px solid rgba(123,47,247,.3);border-radius:16px;margin-bottom:12px;overflow:hidden}
+.faq summary{cursor:pointer;padding:18px 22px;font-weight:800;font-size:.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:color .2s}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'＋';color:var(--orange);font-size:1.3rem;font-weight:400}
+.faq details[open] summary{color:var(--orange-glow)}
+.faq details[open] summary::after{content:'−'}
+.faq .faq-body{padding:0 22px 18px;color:var(--muted);font-size:.9rem;line-height:1.6}
+
+.last-ticket{display:none;margin-top:18px}
+.last-ticket.show{display:block}
+.last-ticket .lt-chip{display:inline-flex;align-items:center;gap:10px;background:rgba(57,255,142,.1);
+  border:1px solid var(--green);border-radius:100px;padding:9px 20px;font-weight:700;font-size:.85rem;color:var(--green);cursor:pointer;font-family:inherit}
+.last-ticket .lt-chip:hover{background:rgba(57,255,142,.2)}
+
+@media(max-width:560px){
+  section{padding:90px 5vw}
+  .buy-panel{padding:40px 6vw}
+  .artist{flex-direction:column;text-align:center;gap:10px}
+  .cd-box{min-width:70px}
+  .cd-box .num{font-size:1.5rem}
+  .lookup-row{flex-direction:column}
+  input,textarea,select{font-size:16px}
+  .modal{padding:24px 18px}
+  .btn{padding:14px 26px}
+  .cta-row{gap:12px}
+  .gender-cards{gap:10px}
+  .gender-card{padding:14px 8px}
+  .ticket-info .row{flex-direction:column;gap:2px}
+}
+</style>
+</head>
+<body>
+
+<div class="fog"></div>
+<span class="floater" style="top:12%;left:6%;font-size:2.6rem;animation-delay:0s">🦇</span>
+<span class="floater" style="top:22%;right:8%;font-size:2.2rem;animation-delay:1.4s">👻</span>
+<span class="floater" style="top:58%;left:3%;font-size:2.8rem;animation-delay:2.6s">🎃</span>
+<span class="floater" style="top:70%;right:5%;font-size:2.2rem;animation-delay:3.8s">🕷️</span>
+<span class="floater" style="top:40%;right:14%;font-size:1.8rem;animation-delay:5s">🕸️</span>
+
+<header>
+  <div class="logo">🎃 HALLOWEEN NKM</div>
+  <nav>
+    <a href="#sobre">Sobre</a>
+    <a href="#lineup">Line-up</a>
+    <a href="#experiencia">Experiência</a>
+    <a href="#ingressos">Ingressos</a>
+    <a href="#meu-ingresso">Meu Ingresso</a>
+    <a href="#local">Local</a>
+    <a href="#regras">Regras</a>
+    <a href="#faq">Dúvidas</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero" id="inicio">
+  <h1>HALLOWEEN<br>NKM</h1>
+  <div class="tagline">🕸️ A Noite Mais Assustadora do Ano 🕸️</div>
+  <p class="sub">Prepare-se para uma noite de <strong>FUNK &amp; HOUSE</strong>, em uma experiência de Halloween com ambiente temático, música, bebidas e muita gente.</p>
+
+  <div class="info-chips">
+    <div class="chip"><span class="ico">📅</span> 30 de Outubro</div>
+    <div class="chip"><span class="ico">🕘</span> A partir das 21h</div>
+    <div class="chip"><span class="ico">📍</span> Prof. Brandão Nº 51</div>
+    <div class="chip"><span class="ico">📌</span> Alto da VX</div>
+  </div>
+
+  <div class="countdown" id="countdown">
+    <div class="cd-box"><div class="num" id="cd-d">--</div><div class="lbl">Dias</div></div>
+    <div class="cd-box"><div class="num" id="cd-h">--</div><div class="lbl">Horas</div></div>
+    <div class="cd-box"><div class="num" id="cd-m">--</div><div class="lbl">Min</div></div>
+    <div class="cd-box"><div class="num" id="cd-s">--</div><div class="lbl">Seg</div></div>
+  </div>
+
+  <div class="cta-row">
+    <button class="btn btn-primary" onclick="openCheckout()">🎟️ Comprar Ingresso</button>
+    <a href="https://wa.me/5541991756327" target="_blank" rel="noopener" class="btn btn-ghost">💬 Falar com o ADM</a>
+  </div>
+
+  <div class="scroll-hint">⬇</div>
+</section>
+
+<section id="sobre">
+  <div class="reveal">
+    <span class="section-tag">Sobre o Evento</span>
+    <h2>Uma noite de FUNK &amp; HOUSE</h2>
+    <p class="section-desc">O Halloween NKM chegou para transformar a sua noite em uma experiência inesquecível. Muita música, ambientação especial e a energia de quem sabe fazer festa.</p>
+    <div class="about-grid">
+      <div class="about-card"><span class="ico">🎃</span><h3>Experiência Temática</h3><p>Ambientação de Halloween completa para você entrar no clima da noite mais assustadora do ano.</p></div>
+      <div class="about-card"><span class="ico">🏡</span><h3>Local Exclusivo</h3><p>Prof. Brandão Nº 51, Alto da VX — um espaço único para uma noite única.</p></div>
+      <div class="about-card"><span class="ico">🔊</span><h3>Som Profissional</h3><p>Estrutura de som de alta qualidade para a vibe de Funk &amp; House ficar perfeita.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="lineup">
+  <div class="reveal">
+    <span class="section-tag">Line-up</span>
+    <h2>🎧 Quem comanda a noite</h2>
+    <p class="section-desc">O som que não deixa ninguém ficar parado.</p>
+    <div class="lineup">
+      <div class="artist"><span class="dj-ico">🔥</span><div><h3>DJ Du França</h3><span>Funk &amp; House</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="experiencia">
+  <div class="reveal">
+    <span class="section-tag">✨ O que te espera</span>
+    <h2>A experiência completa</h2>
+    <p class="section-desc">Cada detalhe pensado para a sua noite de Halloween.</p>
+    <div class="features">
+      <div class="feature"><span class="ico">🎃</span><p>Experiência temática de Halloween</p></div>
+      <div class="feature"><span class="ico">🏡</span><p>Local exclusivo</p></div>
+      <div class="feature"><span class="ico">🔊</span><p>Estrutura de som profissional</p></div>
+      <div class="feature"><span class="ico">💡</span><p>Iluminação e ambientação especial</p></div>
+      <div class="feature"><span class="ico">🎥</span><p>Filmakers registrando os melhores momentos</p></div>
+      <div class="feature"><span class="ico">🍻</span><p>Venda de bebidas no local</p></div>
+      <div class="feature"><span class="ico">👻</span><p>Vá fantasiado e entre no clima da noite</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <span>⚡ CAPACIDADE LIMITADA ⚡ CAPACIDADE LIMITADA ⚡ CAPACIDADE LIMITADA ⚡ CAPACIDADE LIMITADA ⚡&nbsp;</span>
+</div>
+
+<section id="ingressos">
+  <div class="reveal">
+    <span class="section-tag">🎟️ Ingressos</span>
+    <h2>Garanta o seu</h2>
+    <div class="buy-panel">
+      <h3>Compra 100% online — Pix ou pagamento direto com o ADM</h3>
+      <p>Escolha a forma de pagamento, pague e receba seu QR de entrada na hora.</p>
+      <div class="price-note" id="price-note"></div>
+      <div class="cta-row" style="margin-top:0">
+        <button class="btn btn-primary" onclick="openCheckout()">🎟️ Comprar agora</button>
+      </div>
+      <ol class="steps">
+        <li><span class="step-num">1</span><span><b>Pague o PIX</b> na chave informada, pelo app do banco.</span></li>
+        <li><span class="step-num">2</span><span><b>Envie o comprovante</b> ao ADM pelo WhatsApp <b>(41) 99175-6327</b> com seu nome completo.</span></li>
+        <li><span class="step-num">3</span><span><b>Receba seu QR de entrada</b> em "Meu Ingresso" e apresente na portaria.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="local">
+  <div class="reveal">
+    <span class="section-tag">📍 Onde é</span>
+    <h2>O local da festa</h2>
+    <div class="local-card">
+      <span class="big-ico">🏡</span>
+      <h3>Prof. Brandão Nº 51</h3>
+      <p class="local-addr">📌 Alto da VX</p>
+      <p>A partir das <strong style="color:var(--orange-glow)">21h</strong> — chegue cedo, a capacidade é limitada e a fila entra por ordem de chegada.</p>
+      <p style="margin-top:14px">Procure pela decoração de Halloween e pela entrada com a bandeira 🎃. O acesso é exclusivo com <strong>ingresso validado</strong> (QR + documento).</p>
+    </div>
+  </div>
+</section>
+
+<section id="levar">
+  <div class="reveal">
+    <span class="section-tag">🎒 Prepare-se</span>
+    <h2>O que levar</h2>
+    <p class="section-desc">Checklist para sua entrada ser rápida e sem problemas.</p>
+    <div class="checklist">
+      <div class="check-item"><span class="ico">🪪</span><div><h4>Documento original com foto</h4><p>Obrigatório na entrada. RG ou CNH — precisa ser o mesmo CPF do ingresso.</p></div></div>
+      <div class="check-item"><span class="ico">📱</span><div><h4>QR do ingresso</h4><p>Em "Meu Ingresso" no celular, ou anote o código. Funciona offline depois de carregado.</p></div></div>
+      <div class="check-item"><span class="ico">🎭</span><div><h4>Fantasia</h4><p>Vá fantasiado e entre no clima! A melhor produção ganha destaque nos registros da noite.</p></div></div>
+      <div class="check-item"><span class="ico">🔋</span><div><h4>Celular carregado</h4><p>Você vai querer registrar tudo — e os filmmakers vão procurar você para os melhores momentos.</p></div></div>
+      <div class="check-item"><span class="ico">💳</span><div><h4>Dinheiro ou Pix</h4><p>Bebidas são vendidas no local. Traga forma de pagamento para a consumação.</p></div></div>
+      <div class="check-item"><span class="ico">🧥</span><div><h4>Boa energia</h4><p>Funk & House até o fim da noite. A noite é sua — aproveite cada segundo.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="meu-ingresso">
+  <div class="reveal lookup">
+    <span class="section-tag">🎫 Meu Ingresso</span>
+    <h2>Consulte seu QR de entrada</h2>
+    <p class="section-desc">Digite o código do seu ingresso (ex: NKM-ABCD-1234) para ver seu QR de entrada e o status do pagamento.</p>
+    <div class="lookup-row">
+      <input type="text" id="lookup-code" placeholder="NKM-XXXX-XXXX" maxlength="12" autocomplete="off">
+      <button class="btn btn-primary" onclick="lookupTicket()">Consultar</button>
+    </div>
+    <div class="last-ticket" id="last-ticket">
+      <button class="lt-chip" id="lt-chip" onclick="useLastTicket()">🎫</button>
+    </div>
+    <div class="ticket-card" id="ticket-card"></div>
+  </div>
+</section>
+
+<section id="regras">
+  <div class="reveal">
+    <span class="section-tag">⚠️ Informações Importantes</span>
+    <h2>Regras do evento</h2>
+    <p class="section-desc">Leia com atenção antes de garantir seu ingresso.</p>
+    <div class="rules">
+      <div class="rule"><span class="ico">🔞</span><span>Evento exclusivo para <strong>maiores de 17 anos e menores de 21 anos</strong>.</span></div>
+      <div class="rule ok"><span class="ico">🪪</span><span><strong>Documento original com foto obrigatório</strong> na entrada.</span></div>
+      <div class="rule warn"><span class="ico">❌</span><span><strong>Não realizamos reembolso.</strong></span></div>
+      <div class="rule"><span class="ico">✔️</span><span>A compra do ingresso implica na aceitação de todas as regras do evento.</span></div>
+      <div class="rule"><span class="ico">🎫</span><span>Cada QR de entrada é <strong>válido uma única vez</strong> e intransferível.</span></div>
+      <div class="rule"><span class="ico">💰</span><span><strong>👨 Homem: R$ 40,00 · 👩 Mulher: R$ 20,00</strong> — o valor segue o gênero selecionado na compra.</span></div>
+      <div class="rule"><span class="ico">🪪</span><span><strong>Um ingresso por CPF</strong>. Na entrada, conferimos o CPF e o documento (RG/CPF com foto) do cliente.</span></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCheckout()">×</button>
+
+    <div id="step-form">
+      <h3>🎟️ Checkout</h3>
+      <p class="sub">Preencha os dados para gerar seu ingresso e o PIX.</p>
+      <form id="checkout-form" onsubmit="return submitCheckout(event)">
+        <div class="field">
+          <label>Gênero do ingresso *</label>
+          <div class="gender-cards">
+            <button type="button" class="gender-card" id="gender-m" onclick="selectGender('M')">
+              <span class="g-ico">👨</span>
+              <span class="g-name">HOMEM</span>
+              <span class="g-price" id="price-m">R$ 40,00<small>ingresso masculino</small></span>
+            </button>
+            <button type="button" class="gender-card" id="gender-f" onclick="selectGender('F')">
+              <span class="g-ico">👩</span>
+              <span class="g-name">MULHER</span>
+              <span class="g-price" id="price-f">R$ 20,00<small>ingresso feminino</small></span>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="buyer-name">Nome completo * (como no documento)</label>
+          <input type="text" id="buyer-name" name="name" placeholder="Como no documento" required minlength="5" maxlength="80">
+        </div>
+        <div class="field">
+          <label for="buyer-cpf">CPF * (um ingresso por CPF)</label>
+          <input type="text" id="buyer-cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" required>
+        </div>
+        <div class="field">
+          <label for="buyer-phone">WhatsApp (opcional)</label>
+          <input type="tel" id="buyer-phone" name="phone" placeholder="(41) 99999-9999" maxlength="16">
+        </div>
+        <button type="submit" class="btn btn-primary" id="checkout-btn" style="width:100%;justify-content:center">Gerar meu PIX ⚡</button>
+      </form>
+    </div>
+
+    <div id="step-loading" style="display:none">
+      <div class="spinner"></div>
+      <p class="sub" style="text-align:center">Gerando seu ingresso...</p>
+    </div>
+
+    <div id="step-pix" style="display:none">
+      <h3>💳 Pague o PIX</h3>
+      <p class="sub">Pague pelo app do banco usando a chave abaixo, no valor do ingresso.</p>
+      <div class="price-note" id="pix-price-note"></div>
+
+      <div class="alt-pix">
+        <div class="lbl">💡 Chave Pix para pagamento</div>
+        <div class="key-row">
+          <code id="pix-key-static">+55 41 99581-6535</code>
+          <button type="button" class="copy-btn" onclick="copyPixKey()">📋 Copiar chave</button>
+        </div>
+        <p class="sub" style="margin-top:10px">Pague na chave acima e <b>envie o comprovante ao ADM</b> pelo WhatsApp com seu nome completo para liberarmos o ingresso.</p>
+      </div>
+
+      <div class="ticket-code-banner">
+        <div class="lbl">Seu código de ingresso</div>
+        <div class="code" id="ticket-code"></div>
+        <button class="copy-btn" style="margin-top:10px" onclick="copyText(document.getElementById('ticket-code').textContent)">📋 Copiar código</button>
+      </div>
+
+      <p class="sub" style="text-align:center">
+        📩 <b>Após pagar, envie o comprovante ao ADM</b> pelo WhatsApp
+        <a href="https://wa.me/5541991756327" target="_blank" rel="noopener" style="color:var(--green)">(41) 99175-6327</a>
+        com seu <b>nome completo</b>. Assim que o ADM confirmar, seu QR de entrada é liberado aqui.
+      </p>
+
+      <div class="cta-row" style="margin-top:20px">
+        <button class="btn btn-ghost btn-sm" onclick="checkoutStatus()">🔄 Verificar pagamento</button>
+        <button class="btn btn-primary btn-sm" onclick="closeCheckout();document.getElementById('lookup-code').focus()">🎫 Ir para "Meu Ingresso"</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<section id="faq">
+  <div class="reveal">
+    <span class="section-tag">❓ Dúvidas Frequentes</span>
+    <h2>Perguntas &amp; respostas</h2>
+    <p class="section-desc">Tudo o que você precisa saber antes de comprar.</p>
+    <div class="faq">
+      <details>
+        <summary>Como funciona o ingresso?</summary>
+        <div class="faq-body">Você escolhe Homem (R$ 40) ou Mulher (R$ 20), preenche nome e CPF, paga na chave Pix informada e envia o comprovante ao ADM pelo WhatsApp (41) 99175-6327. Assim que o pagamento é confirmado, seu QR de entrada aparece em "Meu Ingresso".</div>
+      </details>
+      <details>
+        <summary>O que preciso na entrada?</summary>
+        <div class="faq-body">Documento original com foto (RG ou CNH) com o mesmo CPF do ingresso. Na portaria, conferimos o CPF do documento com o do ingresso, tiramos uma foto de registro e validamos seu QR — válido uma única vez.</div>
+      </details>
+      <details>
+        <summary>Posso transferir meu ingresso para outra pessoa?</summary>
+        <div class="faq-body">Não. O ingresso é intransferível e nominal: um ingresso por CPF, e na entrada o CPF do documento precisa ser igual ao do ingresso.</div>
+      </details>
+      <details>
+        <summary>Perdi o QR do ingresso. E agora?</summary>
+        <div class="faq-body">Sem problema! Vá em "Meu Ingresso" e digite seu código (ex.: NKM-ABCD-1234) que você recebeu no checkout. O QR é gerado de novo na hora.</div>
+      </details>
+      <details>
+        <summary>O que acontece se eu não puder ir?</summary>
+        <div class="faq-body">Não realizamos reembolso. A compra do ingresso implica na aceitação de todas as regras do evento.</div>
+      </details>
+      <details>
+        <summary>Qual a faixa de idade do evento?</summary>
+        <div class="faq-body">Evento exclusivo para maiores de 17 anos e menores de 21 anos. Documento original com foto obrigatório na entrada.</div>
+      </details>
+      <details>
+        <summary>Tem consumo no local?</summary>
+        <div class="faq-body">Sim! Bebidas são vendidas no local. Traga dinheiro ou Pix para a consumação.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">🎃 HALLOWEEN NKM</div>
+  <p>📅 30 de Outubro · 🕘 A partir das 21h · 📍 Prof. Brandão Nº 51 — Alto da VX</p>
+  <p>💬 Dúvidas ou comprovantes: <a href="https://wa.me/5541991756327" target="_blank" rel="noopener" style="color:var(--green);text-decoration:none">(41) 99175-6327</a></p>
+  <span class="social-label">Siga a NKM Club</span>
+  <div class="socials">
+    <a class="ig" href="https://www.instagram.com/nkmclub/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+      <span>@nkmclub</span>
+    </a>
+    <a class="wa" href="https://chat.whatsapp.com/HohXwNOvZfp8FicxmFNb95?s=cl&amp;p=i&amp;ilr=4&amp;iam=0" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><g transform="translate(6.1 5.2) scale(0.6)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g></svg>
+      <span>Grupo WhatsApp</span>
+    </a>
+  </div>
+  <p class="quote">“Uma noite. Uma experiência que você não vai esquecer.”</p>
+</footer>
+
+<script>
+const target = new Date('2026-10-30T21:00:00-03:00').getTime();
+function tick(){
+  const now = Date.now();
+  const diff = Math.max(0, target - now);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+}
+tick();
+setInterval(tick, 1000);
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+let toastTimer = null;
+function toast(msg, type){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show ' + (type || '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ el.className = ''; }, 3800);
+}
+
+let checkoutTimer = null;
+let selectedGender = '';
+
+function selectGender(g){
+  selectedGender = g;
+  document.getElementById('gender-m').classList.toggle('selected', g === 'M');
+  document.getElementById('gender-f').classList.toggle('selected', g === 'F');
+}
+
+function cpfMask(value){
+  const d = value.replace(/\D/g, '').slice(0, 11);
+  return d.replace(/^(\d{3})(\d)/, '$1.$2')
+          .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+          .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, '$1.$2.$3-$4');
+}
+
+function openCheckout(){
+  document.getElementById('checkout-modal').classList.add('open');
+  showStep('form');
+  document.getElementById('price-note').textContent = '';
+  fetchPrice();
+}
+function closeCheckout(){
+  document.getElementById('checkout-modal').classList.remove('open');
+  clearInterval(checkoutTimer);
+}
+function showStep(step){
+  ['form','loading','pix'].forEach(s=>{
+    document.getElementById('step-' + s).style.display = (s === step) ? 'block' : 'none';
+  });
+}
+function fetchPrice(){
+  fetch('/api/config').then(r=>r.json()).then(cfg=>{
+    const pm = Number(cfg.priceMale || 40).toFixed(2);
+    const pf = Number(cfg.priceFemale || 25).toFixed(2);
+    document.getElementById('price-m').innerHTML = `R$ ${pm.replace('.', ',')}<small>ingresso masculino</small>`;
+    document.getElementById('price-f').innerHTML = `R$ ${pf.replace('.', ',')}<small>ingresso feminino</small>`;
+    let note = `💰 Homem: R$ ${pm.replace('.', ',')} · Mulher: R$ ${pf.replace('.', ',')}`;
+    note += cfg.priceTier2 ? ' · 🔥 LOTE 2' : ` · 🎟️ Lote 1 — restam ${Math.max(0, Number(cfg.tier2After) - Number(cfg.validTickets || 0))}`;
+    document.getElementById('price-note').textContent = note;
+    document.getElementById('pix-price-note').textContent = note;
+    if (cfg.pixKey) document.getElementById('pix-key-static').textContent = cfg.pixKey;
+  }).catch(()=>{});
+}
+
+async function submitCheckout(e){
+  e.preventDefault();
+  const name = document.getElementById('buyer-name').value.trim();
+  const phone = document.getElementById('buyer-phone').value.trim();
+  const cpf = document.getElementById('buyer-cpf').value.replace(/\D/g, '');
+  if (!selectedGender) { toast('Selecione o gênero do ingresso: Homem ou Mulher.', 'error'); return false; }
+  if (name.length < 5) { toast('Informe seu nome completo.', 'error'); return false; }
+  if (cpf.length !== 11) { toast('CPF inválido. Digite os 11 dígitos.', 'error'); return false; }
+  const btn = document.getElementById('checkout-btn');
+  btn.disabled = true;
+  showStep('loading');
+  try {
+    const res = await fetch('/api/tickets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, gender: selectedGender, cpf })
+    });
+    const data = await res.json().catch(()=>({}));
+    if (!res.ok) throw new Error(data.message || 'Falha ao gerar ingresso.');
+    saveLastTicket(data.ticket.code);
+    renderPix(data);
+    startPolling(data.ticket.code);
+  } catch (err) {
+    toast(err.message, 'error');
+    showStep('form');
+  }
+  btn.disabled = false;
+  return false;
+}
+
+function renderPix(data){
+  document.getElementById('ticket-code').textContent = data.ticket.code;
+  if (data.price) {
+    document.getElementById('pix-price-note').textContent = `💰 Valor do ingresso: R$ ${Number(data.price).toFixed(2)}`;
+  }
+  showStep('pix');
+}
+
+function startPolling(code){
+  clearInterval(checkoutTimer);
+  checkoutTimer = setInterval(()=>checkoutStatus(code, true), 6000);
+}
+
+async function checkoutStatus(code, silent){
+  const c = code || document.getElementById('ticket-code').textContent;
+  if (!c) return;
+  try {
+    const data = await getTicket(c);
+    if (data.status === 'paid') {
+      clearInterval(checkoutTimer);
+      toast('Pagamento confirmado! Seu QR de entrada está liberado em "Meu Ingresso". 🎉', 'success');
+      closeCheckout();
+      document.getElementById('meu-ingresso').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('lookup-code').value = c;
+      lookupTicket();
+    } else if (!silent) {
+      toast('Pagamento ainda não confirmado. Envie o comprovante ao ADM.', '');
+    }
+  } catch (err) {
+    if (!silent) toast(err.message, 'error');
+  }
+}
+
+async function getTicket(code){
+  const res = await fetch('/api/tickets/' + encodeURIComponent(code.trim().toUpperCase()));
+  const data = await res.json().catch(()=>({}));
+  if (!res.ok) throw new Error(data.message || 'Ingresso não encontrado.');
+  return data;
+}
+
+async function lookupTicket(){
+  const input = document.getElementById('lookup-code');
+  const card = document.getElementById('ticket-card');
+  const code = input.value.trim().toUpperCase();
+  if (!code) { toast('Digite o código do seu ingresso.', 'error'); return; }
+  try {
+    const data = await getTicket(code);
+    const labels = { pending: 'AGUARDANDO PAGAMENTO', paid: 'INGRESSO VÁLIDO ✅', used: 'JÁ UTILIZADO' };
+    const gLabel = data.gender === 'M' ? '👨 Homem' : data.gender === 'F' ? '👩 Mulher' : '';
+    const gPrice = data.pricePaid ? `R$ ${Number(data.pricePaid).toFixed(2).replace('.', ',')}` : '';
+    let html = `<span class="status-pill status-${data.status}">${labels[data.status] || data.status}</span>
+      <div class="code" style="font-size:1.5rem;font-weight:900;letter-spacing:3px;margin-top:16px">${data.code}</div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="copyText('${data.code}')">📋 Copiar código</button>
+      <div class="who" style="margin-top:10px">${data.name}</div>
+      <div class="who">${gLabel}${gPrice ? ' · ' + gPrice : ''}</div>
+      <div class="who">CPF: ${data.cpf || '—'}</div>`;
+    if (data.status === 'paid' && data.qr) {
+      html += `<div class="qr-wrap"><img src="${data.qr}" alt="QR de entrada"></div>
+        <p class="who">Apresente este QR na portaria. Válido uma única vez.</p>`;
+    } else if (data.status === 'pending') {
+      let payHtml = `<p class="who" style="margin-top:16px">⏳ Pagamento ainda não confirmado.</p>`;
+      if (data.pixQr) {
+        payHtml = `
+          <p class="who" style="margin-top:16px"><b style="color:var(--orange-glow)">Pague o Pix na chave abaixo para liberar seu QR de entrada:</b></p>
+          <p class="who">Pix: <b style="color:var(--green)">${data.pixKey || ''}</b> <button class="btn btn-ghost btn-sm" onclick="copyText('${data.pixKey || ''}','Chave Pix copiada!')">📋 Copiar chave</button></p>
+          <p class="who" style="margin-top:10px">Após pagar, envie o comprovante ao ADM: <b style="color:var(--green)">(41) 99175-6327</b></p>`;
+      }
+      html += payHtml + `<button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="lookupTicket()">🔄 Atualizar</button>`;
+    } else if (data.status === 'used') {
+      html += `<p class="who" style="margin-top:16px">Este ingresso já foi utilizado na entrada.</p>`;
+      if (data.qr) {
+        html += `<div class="qr-wrap"><img src="${data.qr}" alt="QR de entrada"></div>`;
+      }
+    }
+    card.innerHTML = html;
+    card.classList.add('show');
+  } catch (err) {
+    card.innerHTML = `<span class="status-pill status-used">NÃO ENCONTRADO</span>
+      <p class="who" style="margin-top:14px">${err.message}</p>`;
+    card.classList.add('show');
+  }
+}
+
+function copyText(text, msg){
+  const done = ()=>toast(msg || 'Código copiado!', 'success');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, done){
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); done(); } catch {}
+  document.body.removeChild(ta);
+}
+function copyPixKey(){
+  copyText(document.getElementById('pix-key-static').textContent, 'Chave Pix copiada!');
+}
+
+function saveLastTicket(code){
+  try { localStorage.setItem('nkm_last_ticket', code); } catch {}
+}
+
+function showLastTicketChip(){
+  let code = '';
+  try { code = localStorage.getItem('nkm_last_ticket') || ''; } catch {}
+  if (code) {
+    document.getElementById('lt-chip').textContent = `🎫 Último ingresso: ${code}`;
+    document.getElementById('last-ticket').classList.add('show');
+  }
+}
+
+function useLastTicket(){
+  let code = '';
+  try { code = localStorage.getItem('nkm_last_ticket') || ''; } catch {}
+  if (code) {
+    document.getElementById('lookup-code').value = code;
+    lookupTicket();
+    document.getElementById('meu-ingresso').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+showLastTicketChip();
+document.getElementById('lookup-code').addEventListener('input', (e)=>{
+  e.target.value = e.target.value.toUpperCase();
+});
+document.getElementById('lookup-code').addEventListener('keydown', (e)=>{
+  if (e.key === 'Enter') lookupTicket();
+});
+document.getElementById('buyer-cpf').addEventListener('input', (e)=>{
+  e.target.value = cpfMask(e.target.value);
+});
+document.getElementById('checkout-modal').addEventListener('click', (e)=>{
+  if (e.target.id === 'checkout-modal') closeCheckout();
+});
+</script>
+</body>
+</html>

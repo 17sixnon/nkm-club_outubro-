@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0612">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ADM NKM">
+<title>ADM — HALLOWEEN NKM 🎃</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="/js/jsqr.min.js"></script>
+<script src="/js/face-api.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0a0612;--bg2:#150b24;--purple:#7b2ff7;--orange:#ff7518;--orange-glow:#ffa04d;--green:#39ff8e;--red:#ff5b5b;--text:#f3eefc;--muted:#b9a8d6}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px;padding-left:max(20px, env(safe-area-inset-left));padding-right:max(20px, env(safe-area-inset-right));padding-bottom:calc(20px + env(safe-area-inset-bottom));-webkit-text-size-adjust:100%}
+button,a,.tab,.action-btn,.search-item,.logout{touch-action:manipulation}
+.wrap{max-width:900px;margin:0 auto}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:12px}
+.logo{font-family:'Creepster',cursive;font-size:1.8rem;letter-spacing:2px;color:var(--orange);text-shadow:0 0 14px rgba(255,117,24,.8)}
+.badge{font-size:.7rem;letter-spacing:2px;color:var(--green);border:1px solid rgba(57,255,142,.4);border-radius:100px;padding:5px 14px}
+.logout{background:none;border:1px solid var(--purple);color:var(--muted);border-radius:100px;padding:8px 18px;font-family:inherit;font-weight:700;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:26px}
+.stat{background:linear-gradient(160deg,rgba(123,47,247,.15),rgba(21,11,36,.9));border:1px solid rgba(123,47,247,.35);border-radius:16px;padding:18px;text-align:center}
+.stat .n{font-size:2rem;font-weight:900;color:var(--orange-glow)}
+.stat .l{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.tabs{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.tab{background:rgba(21,11,36,.8);border:1px solid rgba(123,47,247,.35);color:var(--muted);border-radius:100px;padding:10px 24px;font-family:inherit;font-weight:800;font-size:.85rem;letter-spacing:1px;cursor:pointer}
+.tab.active{border-color:var(--orange);color:var(--orange-glow);background:rgba(255,117,24,.1)}
+.panel{display:none;background:var(--bg2);border:1px solid rgba(123,47,247,.3);border-radius:22px;padding:30px}
+.panel.active{display:block}
+.panel h2{font-family:'Creepster',cursive;letter-spacing:2px;color:var(--orange);font-size:1.6rem;margin-bottom:16px}
+.entry-row{display:flex;gap:12px;flex-wrap:wrap}
+.entry-row input{flex:1;min-width:220px;background:rgba(10,6,18,.9);border:1px solid rgba(123,47,247,.4);border-radius:100px;padding:15px 24px;color:var(--text);font-family:inherit;font-size:1.05rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;outline:none}
+.entry-row input:focus{border-color:var(--orange)}
+.field{margin-bottom:14px;text-align:left}
+.field label{display:block;font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;background:rgba(10,6,18,.9);border:1px solid rgba(123,47,247,.4);border-radius:12px;padding:13px 16px;color:var(--text);font-family:inherit;font-size:.95rem;outline:none}
+.field input:focus{border-color:var(--orange)}
+.btn{border:none;border-radius:100px;padding:14px 30px;font-family:inherit;font-weight:800;font-size:.95rem;letter-spacing:1px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn-primary{background:linear-gradient(135deg,var(--orange),#ff4d00);color:#1a0b00;box-shadow:0 0 22px rgba(255,117,24,.5)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-green{background:linear-gradient(135deg,var(--green),#12c96a);color:#03240f}
+.btn-ghost{background:transparent;border:2px solid var(--purple);color:var(--text)}
+.btn-ghost:hover{border-color:var(--orange)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-sm{padding:10px 20px;font-size:.8rem}
+.ticket-info{background:rgba(123,47,247,.1);border:1px solid rgba(123,47,247,.4);border-radius:16px;padding:20px;margin-top:20px;display:none}
+.ticket-info.show{display:block}
+.ticket-info .row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed rgba(123,47,247,.25);font-size:.9rem}
+.ticket-info .row:last-child{border-bottom:none}
+.ticket-info .k{color:var(--muted)}
+.ticket-info .v{font-weight:700;text-align:right;word-break:break-all}
+.result{margin-top:20px;border-radius:18px;padding:22px;text-align:center;display:none}
+.result.show{display:block}
+.result.ok{background:rgba(57,255,142,.1);border:1px solid var(--green)}
+.result.warn{background:rgba(255,117,24,.1);border:1px solid var(--orange)}
+.result.err{background:rgba(255,91,91,.1);border:1px solid var(--red)}
+.result .big{font-size:1.35rem;font-weight:900;letter-spacing:2px}
+.result.ok .big{color:var(--green)} .result.warn .big{color:var(--orange-glow)} .result.err .big{color:var(--red)}
+.result .who{color:var(--muted);margin-top:6px;font-size:.9rem}
+.camera{margin-top:22px}
+.camera video{width:100%;max-width:340px;border-radius:16px;border:1px solid rgba(123,47,247,.4);background:#000}
+.camera canvas{display:none}
+.scan-status{color:var(--muted);font-size:.85rem;margin-top:10px}
+.cam-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.photo-preview{margin-top:14px;display:none;text-align:center}
+.photo-preview.show{display:block}
+.photo-preview img{max-width:220px;width:100%;border-radius:14px;border:2px solid var(--green)}
+.photo-preview .cap{color:var(--muted);font-size:.75rem;margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;color:var(--muted);font-size:.68rem;letter-spacing:2px;text-transform:uppercase;padding:10px 8px;border-bottom:1px solid rgba(123,47,247,.3)}
+td{padding:12px 8px;border-bottom:1px solid rgba(123,47,247,.15)}
+tr:hover td{background:rgba(123,47,247,.07)}
+.pill{display:inline-block;padding:4px 12px;border-radius:100px;font-size:.68rem;font-weight:800;letter-spacing:1px}
+.pill.pending{color:var(--orange-glow);background:rgba(255,117,24,.12);border:1px solid var(--orange)}
+.pill.paid{color:var(--green);background:rgba(57,255,142,.12);border:1px solid var(--green)}
+.pill.used{color:var(--red);background:rgba(255,91,91,.12);border:1px solid var(--red)}
+.action-btn{background:rgba(57,255,142,.1);border:1px solid var(--green);color:var(--green);border-radius:8px;padding:6px 14px;font-family:inherit;font-weight:700;font-size:.75rem;cursor:pointer}
+.action-btn:hover{background:rgba(57,255,142,.25)}
+.empty{color:var(--muted);text-align:center;padding:30px}
+.login{max-width:400px;margin:12vh auto;background:var(--bg2);border:1px solid rgba(255,117,24,.5);border-radius:22px;padding:36px;text-align:center}
+.login h1{font-family:'Creepster',cursive;color:var(--orange);letter-spacing:2px;margin-bottom:6px}
+.login p{color:var(--muted);font-size:.85rem;margin-bottom:20px}
+.login input{width:100%;background:rgba(10,6,18,.9);border:1px solid rgba(123,47,247,.4);border-radius:12px;padding:13px 16px;color:var(--text);font-family:inherit;font-size:.95rem;outline:none;margin-bottom:16px}
+.login input:focus{border-color:var(--orange)}
+.login .btn{width:100%}
+.msg{margin-top:12px;font-size:.85rem;color:var(--red)}
+.section-note{font-size:.78rem;color:var(--muted);margin-top:10px;line-height:1.5}
+.search-item{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;background:rgba(21,11,36,.8);border:1px solid rgba(123,47,247,.35);border-radius:12px;padding:12px 16px;margin-bottom:8px;cursor:pointer;font-family:inherit;color:var(--text);text-align:left;transition:border-color .2s}
+.search-item:hover{border-color:var(--orange)}
+.search-item .si-name{font-weight:700;font-size:.9rem}
+.search-item .si-meta{color:var(--muted);font-size:.72rem;text-align:right;white-space:nowrap}
+.search-item .si-meta .pill{margin-left:6px}
+@media(max-width:560px){
+  .entry-row input{min-width:100%}
+  .panel{padding:20px}
+  input,textarea,select{font-size:16px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .btn{padding:13px 24px}
+  .tabs{gap:8px}
+  .tab{padding:9px 16px;font-size:.78rem}
+  .cam-actions .btn-sm{padding:9px 14px;font-size:.72rem}
+  .ticket-info .row{flex-direction:column;gap:2px}
+  .camera video{max-width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="login-screen" class="login">
+    <h1>🎃 ADM — NKM</h1>
+    <p>Painel de ingressos do Halloween NKM</p>
+    <input type="password" id="login-token" placeholder="Token de administrador" autocomplete="off">
+    <button class="btn btn-primary" onclick="login()">Entrar</button>
+    <div class="msg" id="login-msg"></div>
+  </div>
+
+  <div id="dashboard" style="display:none">
+    <div class="top">
+      <div class="logo">🎃 ADM — HALLOWEEN NKM</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <span class="badge">🛡️ PAINEL PRIVADO</span>
+        <button class="logout" onclick="logout()">Sair</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n" id="st-total">-</div><div class="l">Total</div></div>
+      <div class="stat"><div class="n" id="st-pending" style="color:var(--orange-glow)">-</div><div class="l">Pendentes</div></div>
+      <div class="stat"><div class="n" id="st-paid" style="color:var(--green)">-</div><div class="l">Pagos</div></div>
+      <div class="stat"><div class="n" id="st-used" style="color:var(--red)">-</div><div class="l">Utilizados</div></div>
+      <div class="stat"><div class="n" id="st-male" style="color:#6ec6ff">-</div><div class="l">👨 Homens</div></div>
+      <div class="stat"><div class="n" id="st-female" style="color:#ff8ad8">-</div><div class="l">👩 Mulheres</div></div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="entry" onclick="switchTab('entry')">🚪 Entrada</button>
+      <button class="tab" data-tab="metrics" onclick="switchTab('metrics')">📊 Métricas</button>
+      <button class="tab" data-tab="clients" onclick="switchTab('clients')">👥 Clientes</button>
+      <button class="tab" data-tab="sales" onclick="switchTab('sales')">💳 Pagamentos</button>
+      <button class="tab" data-tab="all" onclick="switchTab('all')">📋 Todos os ingressos</button>
+    </div>
+
+    <div class="panel active" id="panel-entry">
+      <h2>Validar entrada</h2>
+      <div class="entry-row">
+        <input type="text" id="entry-code" placeholder="NKM-XXXX-XXXX" maxlength="12" autocomplete="off">
+        <button class="btn btn-primary" onclick="checkEntry()">Verificar</button>
+      </div>
+
+      <h2 style="margin-top:22px">Buscar cliente</h2>
+      <div class="entry-row">
+        <input type="text" id="client-search" placeholder="Digite o nome, código ou CPF do cliente..." autocomplete="off" style="text-transform:none;letter-spacing:0;border-radius:16px" oninput="searchClients(this.value)">
+      </div>
+      <div id="search-results" style="margin-top:12px"></div>
+
+      <div class="ticket-info" id="ticket-info"></div>
+
+      <div id="doc-check" style="display:none">
+        <h2 style="margin-top:26px">Conferência de documento</h2>
+        <div class="field">
+          <label for="entry-cpf">CPF do documento do cliente *</label>
+          <input type="text" id="entry-cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" oninput="this.value=this.value.replace(/[^\d]/g,'').slice(0,11).replace(/^(\d{3})(\d)/,'$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/,'$1.$2.$3').replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/,'$1.$2.$3-$4')">
+        </div>
+        <div class="field">
+          <label for="entry-rg">Nº do RG (opcional — registrado no sistema)</label>
+          <input type="text" id="entry-rg" placeholder="Ex.: 12.345.678-9" maxlength="20">
+        </div>
+        <div class="cam-actions">
+          <button class="btn btn-ghost btn-sm" onclick="compareCpf()">🔍 Conferir CPF</button>
+          <button class="btn btn-green btn-sm" id="redeem-btn" onclick="redeemEntry()" disabled>✔ Validar entrada</button>
+        </div>
+        <p class="section-note" id="doc-note">O CPF digitado deve ser igual ao CPF do ingresso. A validação só libera após o CPF conferir.</p>
+      </div>
+
+      <div class="result" id="entry-result"></div>
+
+      <div class="camera">
+        <h2 style="margin-top:26px">Câmera</h2>
+        <button class="btn btn-ghost" id="cam-btn" onclick="toggleCamera()">📷 Ligar câmera</button>
+        <div style="margin-top:14px;display:none" id="cam-box">
+          <video id="cam-video" playsinline></video>
+          <canvas id="cam-canvas"></canvas>
+          <div class="scan-status" id="cam-status">Aponte a câmera para o QR do ingresso ou para o rosto do cliente.</div>
+          <div class="cam-actions">
+            <button class="btn btn-ghost btn-sm" onclick="stopCamera()">⏹ Desligar</button>
+            <button class="btn btn-primary btn-sm" onclick="capturePhoto()">📸 Capturar foto do cliente</button>
+            <button class="btn btn-ghost btn-sm" onclick="analyzeGender()">🧠 Analisar gênero (IA)</button>
+          </div>
+          <div class="photo-preview" id="photo-preview">
+            <img id="photo-img" alt="Foto do cliente">
+            <div class="cap">Foto registrada na entrada (ficará vinculada ao ingresso)</div>
+          </div>
+        </div>
+        <p class="section-note">⚠️ A análise de gênero por câmera é apenas uma <b>sugestão</b> (não é 100% precisa). A confirmação oficial é feita pela conferência do documento (RG/CPF com foto) com o cliente. A validação final é decisão do ADM.</p>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-metrics">
+      <h2>📊 Métricas de Visitas (Tempo Real)</h2>
+      <p class="section-note">Dados anônimos (IP + timestamp + rota). Atualização automática a cada 3s via SSE.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px">
+        <button class="btn btn-ghost btn-sm" onclick="loadMetrics()">🔄 Atualizar</button>
+        <button class="btn btn-ghost btn-sm" style="border-color:var(--red);color:var(--red)" onclick="clearMetrics()">🗑️ Limpar métricas</button>
+      </div>
+
+      <div class="stats" id="metrics-stats" style="margin-bottom:22px">
+        <div class="stat"><div class="n" id="m-total">0</div><div class="l">Visitantes totais</div></div>
+        <div class="stat"><div class="n" id="m-unique" style="color:#6ec6ff">0</div><div class="l"> IPs únicos</div></div>
+        <div class="stat"><div class="n" id="m-today" style="color:var(--orange-glow)">0</div><div class="l">Hoje</div></div>
+        <div class="stat"><div class="n" id="m-7d" style="color:var(--green)">0</div><div class="l">Últimos 7 dias</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;margin-bottom:22px">
+        <div style="background:rgba(10,6,18,.6);border:1px solid rgba(123,47,247,.35);border-radius:16px;padding:18px">
+          <h3 style="font-size:.85rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">Visitantes por dia (últimos 7)</h3>
+          <div style="position:relative;height:200px"><canvas id="chart-days"></canvas></div>
+        </div>
+        <div style="background:rgba(10,6,18,.6);border:1px solid rgba(123,47,247,.35);border-radius:16px;padding:18px">
+          <h3 style="font-size:.85rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">Rotas mais acessadas</h3>
+          <div style="position:relative;height:200px"><canvas id="chart-paths"></canvas></div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:22px">Últimas visitas (50)</h3>
+      <div id="metrics-recent" style="margin-top:12px"></div>
+    </div>
+
+    <div class="panel" id="panel-clients">
+      <h2>Clientes</h2>
+      <div class="cam-actions" style="margin-bottom:14px">
+        <button class="btn btn-ghost btn-sm" style="border-color:var(--red);color:var(--red)" onclick="clearAllTickets()">🗑️ Limpar base de clientes</button>
+        <span class="scan-status">Remove todos os ingressos e dados de clientes. Ação irreversível.</span>
+      </div>
+      <div class="entry-row">
+        <input type="text" id="clients-filter" placeholder="Filtrar por nome, código ou CPF..." autocomplete="off" style="text-transform:none;letter-spacing:0;border-radius:16px" oninput="renderClients()">
+      </div>
+      <p class="section-note">Toque em "Validar entrada" para abrir a validação do cliente direto na entrada.</p>
+      <div id="clients-list" style="margin-top:16px"></div>
+    </div>
+
+    <div class="panel" id="panel-sales">
+      <h2>Pagamentos pendentes</h2>
+      <p class="section-note">Após o cliente enviar o comprovante pelo WhatsApp, confirme o PIX abaixo.</p>
+      <div id="pending-list"></div>
+    </div>
+
+    <div class="panel" id="panel-all">
+      <h2>Todos os ingressos</h2>
+      <div id="all-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let token = sessionStorage.getItem('nkm_admin_token') || '';
+let currentEntry = null;
+let cpfMatch = false;
+let entryPhoto = null;
+let camStream = null;
+let camTimer = null;
+let genderModelsLoaded = false;
+let allTicketsCache = [];
+
+if (token) { $('dashboard').style.display = 'block'; $('login-screen').style.display = 'none'; refresh(); loadAllTickets(); }
+
+async function loadAllTickets(){
+  const r = await api('/api/tickets');
+  if (r.ok) allTicketsCache = r.data.tickets;
+}
+
+async function api(path, method, body){
+  const res = await fetch(path, {
+    method: method || 'GET',
+    headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  const data = await res.json().catch(()=>({}));
+  return { ok: res.ok, status: res.status, data };
+}
+
+function login(){
+  token = $('login-token').value.trim();
+  if (!token) return;
+  api('/api/tickets').then(r=>{
+    if (r.ok) {
+      sessionStorage.setItem('nkm_admin_token', token);
+      $('dashboard').style.display = 'block';
+      $('login-screen').style.display = 'none';
+      loadAllTickets();
+      refresh();
+    } else {
+      $('login-msg').textContent = r.data.message || 'Token inválido.';
+    }
+  });
+}
+function logout(){
+  token = '';
+  sessionStorage.removeItem('nkm_admin_token');
+  stopCamera();
+  $('dashboard').style.display = 'none';
+  $('login-screen').style.display = 'block';
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  $('panel-' + tab).classList.add('active');
+  if (tab !== 'entry') stopCamera();
+  if (tab === 'entry') loadAllTickets();
+  if (tab === 'metrics') { loadMetrics(); startMetricsAuto(); }
+  else { stopMetricsAuto(); }
+  if (tab === 'sales') renderPending();
+  if (tab === 'all') renderAll();
+  if (tab === 'clients') renderClients();
+}
+
+let metricsAutoTimer = null;
+function startMetricsAuto(){
+  if (metricsAutoTimer) return;
+  metricsAutoTimer = setInterval(()=>{ if ($('panel-metrics').classList.contains('active')) loadMetrics(); }, 5000);
+}
+function stopMetricsAuto(){
+  if (metricsAutoTimer) { clearInterval(metricsAutoTimer); metricsAutoTimer = null; }
+}
+
+async function refresh(){
+  const r = await api('/api/tickets');
+  if (!r.ok) return;
+  $('st-total').textContent = r.data.summary.total;
+  $('st-pending').textContent = r.data.summary.pending;
+  $('st-paid').textContent = r.data.summary.paid;
+  $('st-used').textContent = r.data.summary.used;
+  $('st-male').textContent = r.data.summary.male || 0;
+  $('st-female').textContent = r.data.summary.female || 0;
+  allTicketsCache = r.data.tickets;
+  if ($('panel-sales').classList.contains('active')) renderPending();
+  if ($('panel-all').classList.contains('active')) renderAll();
+  if ($('panel-clients').classList.contains('active')) renderClients();
+}
+setInterval(()=>{ if (token) refresh(); }, 15000);
+
+let searchTimer = null;
+function searchClients(q){
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(()=>renderSearchResults(q), 200);
+}
+
+function renderSearchResults(q){
+  const box = $('search-results');
+  const query = (q || '').trim().toLowerCase();
+  if (!query) { box.innerHTML = ''; return; }
+  const digits = query.replace(/\D/g, '');
+  const matches = allTicketsCache.filter(t =>
+    (t.name || '').toLowerCase().includes(query) ||
+    t.code.toLowerCase().includes(query.toUpperCase()) ||
+    (digits.length >= 3 && (t.cpf || '').includes(digits))
+  ).slice(0, 8);
+  box.innerHTML = matches.length
+    ? matches.map(t => {
+        const gIcon = t.gender === 'M' ? '👨' : t.gender === 'F' ? '👩' : '';
+        return `<button class="search-item" onclick="pickClient('${t.code}')">
+          <span class="si-name">${gIcon} ${t.name}</span>
+          <span class="si-meta">${t.code}${t.pricePaid ? ' · ' + brl(t.pricePaid) : ''}<span class="pill ${t.status}">${t.status.toUpperCase()}</span></span>
+        </button>`;
+      }).join('')
+    : '<div class="empty" style="padding:12px">Nenhum cliente encontrado.</div>';
+}
+
+function pickClient(code){
+  $('entry-code').value = code;
+  $('client-search').value = '';
+  $('search-results').innerHTML = '';
+  checkEntry();
+}
+
+function clearAllTickets(){
+  if (!confirm('ATENÇÃO: isso apaga TODOS os ingressos e clientes. Continuar?')) return;
+  if (!confirm('Confirma a limpeza completa? Esta ação é irreversível.')) return;
+  fetch('/api/tickets', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+  }).then(r=>r.json().then(d=>({ ok: r.ok, d }))).then(r=>{
+    alert(r.d.message || 'Falha ao limpar a base.');
+    if (r.ok) { resetEntryState(); refresh(); }
+  }).catch(()=>alert('Falha ao limpar a base.'));
+}
+
+async function renderClients(){
+  const r = await api('/api/tickets');
+  if (!r.ok) return;
+  const q = ($('clients-filter').value || '').trim().toLowerCase();
+  const digits = q.replace(/\D/g, '');
+  const list = r.data.tickets.filter(t => !q ||
+    (t.name || '').toLowerCase().includes(q) ||
+    t.code.toLowerCase().includes(q.toUpperCase()) ||
+    (digits.length >= 3 && (t.cpf || '').includes(digits))
+  );
+    $('clients-list').innerHTML = list.length
+    ? `<div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table><tr><th>Código</th><th>Cliente</th><th>Gênero / valor</th><th>CPF</th><th>Status</th><th></th></tr>${list.map(t=>{
+        const gLabel = t.gender === 'M' ? '👨 Homem' : t.gender === 'F' ? '👩 Mulher' : '—';
+        const action = t.status === 'pending'
+          ? `<button class="action-btn" onclick="confirmPay('${t.code}')">✔ Confirmar PIX</button>`
+          : t.status === 'paid'
+          ? `<button class="action-btn" onclick="quickCheck('${t.code}')">🚪 Validar entrada</button>`
+          : `<span style="color:var(--muted);font-size:.75rem">Usado ${time(t.usedAt)}</span>`;
+        return `<tr>
+          <td><b>${t.code}</b></td>
+          <td>${t.name}${t.phone ? `<br><span style="color:var(--muted);font-size:.75rem">${t.phone}</span>` : ''}</td>
+          <td>${gLabel}${t.pricePaid ? ' · ' + brl(t.pricePaid) : ''}</td>
+          <td>${cpfFmt(t.cpf)}</td>
+          <td><span class="pill ${t.status}">${t.status.toUpperCase()}</span></td>
+          <td>${action}</td>
+        </tr>`;
+      }).join('')}</table></div>`
+    : '<div class="empty">Nenhum cliente encontrado.</div>';
+}
+
+function time(iso){ return iso ? new Date(iso).toLocaleString('pt-BR') : '—'; }
+function brl(v){ return 'R$ ' + Number(v || 0).toFixed(2).replace('.', ','); }
+function cpfFmt(d){
+  d = String(d || '').replace(/\D/g, '');
+  return d.length === 11 ? `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6,9)}-${d.slice(9)}` : (d || '—');
+}
+
+function ticketRow(t, showActions){
+  const gLabel = t.gender === 'M' ? '👨' : t.gender === 'F' ? '👩' : '';
+  const gPrice = t.pricePaid ? brl(t.pricePaid) : '';
+  const payTag = '<br><span style="color:var(--muted);font-size:.68rem">Pix manual</span>';
+  const action = t.status === 'pending'
+    ? `<button class="action-btn" onclick="confirmPay('${t.code}')">✔ Confirmar PIX</button>`
+    : t.status === 'paid'
+    ? `<button class="action-btn" onclick="quickCheck('${t.code}')">🚪 Validar entrada</button>`
+    : `<span style="color:var(--muted);font-size:.75rem">Entrada: ${time(t.usedAt)}</span>`;
+  return `<tr>
+    <td><b>${t.code}</b>${payTag}<br>${gLabel} ${gPrice}</td>
+    <td>${t.name}${t.phone ? `<br><span style="color:var(--muted);font-size:.75rem">${t.phone}</span>` : ''}</td>
+    <td>${time(t.createdAt)}</td>
+    <td><span class="pill ${t.status}">${t.status.toUpperCase()}</span></td>
+    <td>${showActions ? action : ''}</td>
+  </tr>`;
+}
+
+async function renderPending(){
+  const r = await api('/api/tickets');
+  if (!r.ok) return;
+  const list = r.data.tickets.filter(t=>t.status === 'pending');
+  $('pending-list').innerHTML = list.length
+    ? `<div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table><tr><th>Código</th><th>Comprador</th><th>Solicitado em</th><th>Status</th><th>Ação</th></tr>${list.map(t=>ticketRow(t,true)).join('')}</table></div>`
+    : '<div class="empty">Nenhum pagamento pendente no momento.</div>';
+}
+
+async function renderAll(){
+  const r = await api('/api/tickets');
+  if (!r.ok) return;
+  const list = r.data.tickets;
+  $('all-list').innerHTML = list.length
+    ? `<div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table><tr><th>Código</th><th>Comprador</th><th>Criado em</th><th>Status</th><th></th></tr>${list.map(t=>ticketRow(t,true)).join('')}</table></div>`
+    : '<div class="empty">Nenhum ingresso emitido ainda.</div>';
+}
+
+async function confirmPay(code){
+  const r = await api('/api/tickets/' + encodeURIComponent(code) + '/confirm', 'POST');
+  if (r.ok) { refresh(); }
+  alert(r.data.message);
+}
+
+function quickCheck(code){
+  switchTab('entry');
+  $('entry-code').value = code;
+  checkEntry();
+}
+
+function showResult(kind, big, who){
+  const el = $('entry-result');
+  el.className = 'result show ' + kind;
+  el.innerHTML = `<div class="big">${big}</div>${who ? `<div class="who">${who}</div>` : ''}`;
+}
+
+function resetEntryState(){
+  currentEntry = null;
+  cpfMatch = false;
+  entryPhoto = null;
+  $('ticket-info').classList.remove('show');
+  $('ticket-info').innerHTML = '';
+  $('doc-check').style.display = 'none';
+  $('redeem-btn').disabled = true;
+  $('photo-preview').classList.remove('show');
+}
+
+async function checkEntry(){
+  const code = $('entry-code').value.trim().toUpperCase();
+  if (!code) return;
+  resetEntryState();
+  const r = await api('/api/tickets/' + encodeURIComponent(code));
+  if (!r.ok) {
+    showResult('err', '❌ INGRESSO NÃO ENCONTRADO', r.data.message);
+    return;
+  }
+  const t = r.data;
+  currentEntry = t;
+  const gLabel = t.gender === 'M' ? '👨 Homem' : t.gender === 'F' ? '👩 Mulher' : '—';
+  $('ticket-info').innerHTML = `
+    <div class="row"><span class="k">Código</span><span class="v">${t.code}</span></div>
+    <div class="row"><span class="k">Nome</span><span class="v">${t.name}</span></div>
+    <div class="row"><span class="k">Gênero / valor pago</span><span class="v">${gLabel} · ${brl(t.pricePaid)}</span></div>
+    <div class="row"><span class="k">CPF cadastrado</span><span class="v">${cpfFmt(t.cpf)}</span></div>
+    <div class="row"><span class="k">Status</span><span class="v">${t.status.toUpperCase()}</span></div>`;
+  $('ticket-info').classList.add('show');
+
+  if (t.status === 'paid') {
+    $('doc-check').style.display = 'block';
+    if (!t.cpf) {
+      $('doc-note').textContent = '⚠️ Ingresso antigo sem CPF cadastrado — confira o documento (RG/CPF com foto) manualmente antes de validar.';
+      $('redeem-btn').disabled = false;
+    } else {
+      $('doc-note').textContent = 'O CPF digitado deve ser igual ao CPF do ingresso. A validação só libera após o CPF conferir.';
+      $('redeem-btn').disabled = true;
+    }
+    showResult('ok', '✅ PAGAMENTO CONFIRMADO', `${t.name} — confira o documento para liberar a entrada.`);
+  } else if (t.status === 'pending') {
+    showResult('warn', '⏳ PAGAMENTO NÃO CONFIRMADO', `${t.name} — confirme o PIX em "Pagamentos" antes da entrada.`);
+  } else {
+    showResult('err', '🚫 INGRESSO JÁ UTILIZADO', `${t.name} — usado em ${time(t.usedAt)}.`);
+  }
+}
+
+function compareCpf(){
+  if (!currentEntry) return;
+  const doc = $('entry-cpf').value.replace(/\D/g, '');
+  if (doc.length !== 11) {
+    showResult('warn', '⚠️ CPF INCOMPLETO', 'Digite os 11 dígitos do CPF do documento.');
+    return;
+  }
+  if (!currentEntry.cpf) {
+    cpfMatch = true;
+    $('redeem-btn').disabled = false;
+    showResult('ok', '✔ CPF DO DOCUMENTO REGISTRADO', 'Ingresso sem CPF cadastrado. Conferiu o documento com foto? Então valide a entrada.');
+    return;
+  }
+  cpfMatch = doc === currentEntry.cpf;
+  $('redeem-btn').disabled = !cpfMatch;
+  if (cpfMatch) {
+    showResult('ok', '✔ CPF CONFERE COM O INGRESSO', `${currentEntry.name} — documento conferido. Capture a foto e valide a entrada.`);
+  } else {
+    showResult('err', '✖ CPF NÃO CONFERE', 'O CPF do documento é diferente do CPF do ingresso. Verifique com o cliente — a entrada NÃO será liberada.');
+  }
+}
+
+async function redeemEntry(){
+  if (!currentEntry) return;
+  const docCpf = $('entry-cpf').value.replace(/\D/g, '');
+  if (currentEntry.cpf && !cpfMatch) {
+    showResult('warn', '⚠️ CONFIRA O CPF PRIMEIRO', 'A entrada só libera após o CPF do documento conferir com o ingresso.');
+    return;
+  }
+  if (currentEntry.cpf && docCpf.length !== 11) {
+    showResult('warn', '⚠️ CPF INCOMPLETO', 'Digite os 11 dígitos do CPF do documento.');
+    return;
+  }
+  const rg = $('entry-rg').value.trim();
+  $('redeem-btn').disabled = true;
+  const r = await api('/api/tickets/' + encodeURIComponent(currentEntry.code) + '/redeem', 'POST', {
+    cpf: docCpf,
+    rg,
+    entryPhoto
+  });
+  if (r.ok) {
+    showResult('ok', '🎉 ENTRADA LIBERADA!', r.data.message + (entryPhoto ? ' Foto e documento registrados.' : ''));
+    try { if (navigator.vibrate) navigator.vibrate(200); } catch {}
+    refresh();
+  } else {
+    showResult(r.status === 409 ? 'err' : 'warn', '⚠️ NÃO É POSSÍVEL ENTRAR', r.data.message);
+    $('redeem-btn').disabled = false;
+  }
+}
+
+$('entry-code').addEventListener('keydown', (e)=>{ if (e.key === 'Enter') checkEntry(); });
+$('entry-cpf').addEventListener('keydown', (e)=>{ if (e.key === 'Enter') compareCpf(); });
+
+function extractCode(text){
+  const m = String(text || '').match(/NKM-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
+  return m ? m[0].toUpperCase() : null;
+}
+
+async function toggleCamera(){
+  if (camStream) { stopCamera(); return; }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    $('cam-status').textContent = 'Câmera bloqueada: navegador só libera câmera em HTTPS ou localhost. Use a URL HTTPS ou digite o código manualmente.';
+    return;
+  }
+  if (typeof jsQR === 'undefined') {
+    $('cam-status').textContent = 'Leitor de QR não carregou — câmera abrirá, mas use a digitação manual do código.';
+  } else {
+    $('cam-status').textContent = 'Aponte a câmera para o QR do ingresso ou para o rosto do cliente.';
+  }
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    $('cam-box').style.display = 'block';
+    $('cam-btn').textContent = '📷 Câmera ligada — tocar para desligar';
+    const video = $('cam-video');
+    video.srcObject = camStream;
+    video.setAttribute('playsinline', true);
+    await video.play();
+    const canvas = $('cam-canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    let lastScanAt = 0;
+    const scan = () => {
+      if (!camStream) return;
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        const scale = Math.min(1, 640 / video.videoWidth);
+        canvas.width = Math.max(1, Math.round(video.videoWidth * scale));
+        canvas.height = Math.max(1, Math.round(video.videoHeight * scale));
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        if (typeof jsQR !== 'undefined') {
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const decoded = jsQR(imageData.data, canvas.width, canvas.height);
+          if (decoded) {
+            const code = extractCode(decoded.data);
+            const now = Date.now();
+            if (code && (code !== $('entry-code').value || now - lastScanAt > 3000)) {
+              lastScanAt = now;
+              $('entry-code').value = code;
+              $('cam-status').textContent = `QR lido: ${code} — validando...`;
+              checkEntry();
+            }
+          }
+        }
+      }
+      camTimer = requestAnimationFrame(scan);
+    };
+    scan();
+  } catch (err) {
+    const insecure = location.protocol !== 'https:' && !/^localhost|^127\./.test(location.hostname);
+    $('cam-status').textContent = insecure
+      ? 'Câmera bloqueada em HTTP. Acesse pela URL HTTPS (ou localhost) para escanear, ou digite o código manualmente.'
+      : 'Câmera não disponível ou permissão negada. Digite o código manualmente.';
+  }
+}
+
+function stopCamera(){
+  if (camTimer) cancelAnimationFrame(camTimer);
+  camTimer = null;
+  if (camStream) {
+    camStream.getTracks().forEach(t=>t.stop());
+    camStream = null;
+  }
+  $('cam-box').style.display = 'none';
+  $('cam-btn').textContent = '📷 Ligar câmera';
+  $('cam-status').textContent = 'Aponte a câmera para o QR do ingresso ou para o rosto do cliente.';
+}
+
+function capturePhoto(){
+  const video = $('cam-video');
+  if (!camStream || video.readyState !== video.HAVE_ENOUGH_DATA) {
+    $('cam-status').textContent = 'Ligue a câmera primeiro para capturar a foto.';
+    return;
+  }
+  const canvas = document.createElement('canvas');
+  const targetW = 480;
+  const scale = targetW / video.videoWidth;
+  canvas.width = targetW;
+  canvas.height = Math.round(video.videoHeight * scale);
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+  entryPhoto = canvas.toDataURL('image/jpeg', 0.7);
+  $('photo-img').src = entryPhoto;
+  $('photo-preview').classList.add('show');
+  $('cam-status').textContent = 'Foto capturada. Agora valide a entrada.';
+}
+
+async function loadGenderModels(){
+  if (genderModelsLoaded) return true;
+  if (typeof faceapi === 'undefined') {
+    $('cam-status').textContent = 'Biblioteca de IA não carregou (sem internet?). A conferência manual continua disponível.';
+    return false;
+  }
+  try {
+    $('cam-status').textContent = 'Carregando modelo de IA (primeira vez demora alguns segundos)...';
+    const base = '/js/weights';
+    await faceapi.nets.tinyFaceDetector.loadFromUri(base);
+    await faceapi.nets.genderNet.loadFromUri(base);
+    genderModelsLoaded = true;
+    $('cam-status').textContent = 'Modelo de IA carregado.';
+    return true;
+  } catch (err) {
+    $('cam-status').textContent = 'Falha ao carregar o modelo de IA. Use a conferência manual do documento.';
+    return false;
+  }
+}
+
+async function analyzeGender(){
+  const ok = await loadGenderModels();
+  if (!ok) return;
+  const video = $('cam-video');
+  if (!camStream || video.readyState !== video.HAVE_ENOUGH_DATA) {
+    $('cam-status').textContent = 'Ligue a câmera e aponte para o rosto do cliente.';
+    return;
+  }
+  try {
+    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 320 })).withGender();
+    if (!detections.length) {
+      $('cam-status').textContent = 'Nenhum rosto detectado. Aproxime o cliente da câmera.';
+      return;
+    }
+    const g = detections[0].gender;
+    const prob = (detections[0].genderProbability * 100).toFixed(0);
+    const label = g === 'male' ? 'MASCULINO' : 'FEMININO';
+    const expected = currentEntry && currentEntry.gender === 'M' ? 'MASCULINO' : currentEntry && currentEntry.gender === 'F' ? 'FEMININO' : null;
+    const matchNote = expected ? (expected === label ? ' — confere com o ingresso ✅' : ` — NÃO confere com o ingresso (${expected}) ⚠️`) : '';
+    $('cam-status').innerHTML = `🧠 Sugestão da IA: <b>${label}</b> (${prob}% de confiança)${matchNote}.<br><b>Sugestão apenas — confirme com o documento (RG/CPF com foto). A decisão final é do ADM.</b>`;
+  } catch (err) {
+    $('cam-status').textContent = 'Falha na análise. Use a conferência manual do documento.';
+  }
+}
+
+async function loadMetrics(){
+  const r = await api('/api/metrics');
+  if (!r.ok) { $('metrics-stats').innerHTML = '<div class="empty">Falha ao carregar métricas.</div>'; return; }
+  const d = r.data;
+  $('m-total').textContent = d.total;
+  $('m-unique').textContent = d.uniqueIps;
+  $('m-today').textContent = d.today;
+  $('m-7d').textContent = d.last7Days;
+
+  const paths = Object.entries(d.byPath).sort((a,b)=>b[1]-a[1]);
+  const pathLabels = paths.map(([p]) => p);
+  const pathValues = paths.map(([,c]) => c);
+
+  const recent = d.recent.slice().reverse();
+  $('metrics-recent').innerHTML = recent.length
+    ? `<table><tr><th>Data/hora</th><th>IP</th><th>Rota</th></tr>${recent.map(m=>`<tr><td>${new Date(m.ts).toLocaleString('pt-BR')}</td><td>${m.ip}</td><td>${m.path}</td></tr>`).join('')}</table>`
+    : '<div class="empty">Nenhum registro ainda.</div>';
+
+  renderCharts(d, pathLabels, pathValues);
+  startLiveMetrics();
+}
+
+let chartDays = null, chartPaths = null;
+
+function renderCharts(d, pathLabels, pathValues){
+  const days = Object.entries(d.byDay || {}).sort(([a],[b]) => a.localeCompare(b));
+  const dayLabels = days.map(([k]) => k.split('-').slice(1).join('/'));
+  const dayValues = days.map(([,v]) => v);
+
+  const ctxD = document.getElementById('chart-days');
+  if (ctxD) {
+    if (chartDays) chartDays.destroy();
+    chartDays = new Chart(ctxD, {
+      type: 'line',
+      data: {
+        labels: dayLabels.length ? dayLabels : ['—'],
+        datasets: [{
+          label: 'Visitantes',
+          data: dayValues.length ? dayValues : [0],
+          borderColor: '#ff7518',
+          backgroundColor: 'rgba(255,117,24,.15)',
+          fill: true,
+          tension: .35,
+          pointRadius: 4,
+          pointBackgroundColor: '#ff7518',
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#b9a8d6', font: { size: 10 } }, grid: { color: 'rgba(123,47,247,.15)' } },
+          y: { beginAtZero: true, ticks: { color: '#b9a8d6', precision: 0 }, grid: { color: 'rgba(123,47,247,.15)' } },
+        },
+      },
+    });
+  }
+
+  const ctxP = document.getElementById('chart-paths');
+  if (ctxP) {
+    if (chartPaths) chartPaths.destroy();
+    chartPaths = new Chart(ctxP, {
+      type: 'bar',
+      data: {
+        labels: pathLabels.length ? pathLabels.slice(0, 8) : ['—'],
+        datasets: [{
+          label: 'Acessos',
+          data: pathValues.length ? pathValues.slice(0, 8) : [0],
+          backgroundColor: ['#7b2ff7','#39ff8e','#ff7518','#ff5b5b','#6ec6ff','#ffa04d','#b9a8d6','#9d4edd'],
+          borderRadius: 6,
+        }],
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true, ticks: { color: '#b9a8d6', precision: 0 }, grid: { color: 'rgba(123,47,247,.15)' } },
+          y: { ticks: { color: '#b9a8d6', font: { size: 10 } }, grid: { color: 'rgba(123,47,247,.15)' } },
+        },
+      },
+    });
+  }
+}
+
+function applyLive(d){
+  $('m-total').textContent = d.total;
+  $('m-unique').textContent = d.uniqueIps;
+  $('m-today').textContent = d.today;
+  $('m-7d').textContent = d.last7Days;
+
+  const paths = Object.entries(d.byPath || {}).sort((a,b)=>b[1]-a[1]);
+  const pathLabels = paths.map(([p]) => p);
+  const pathValues = paths.map(([,c]) => c);
+
+  const days = Object.entries(d.byDay || {}).sort(([a],[b]) => a.localeCompare(b));
+  const dayLabels = days.map(([k]) => k.split('-').slice(1).join('/'));
+  const dayValues = days.map(([,v]) => v);
+
+  if (chartDays) {
+    chartDays.data.labels = dayLabels.length ? dayLabels : ['—'];
+    chartDays.data.datasets[0].data = dayValues.length ? dayValues : [0];
+    chartDays.update('none');
+  }
+  if (chartPaths) {
+    chartPaths.data.labels = pathLabels.length ? pathLabels.slice(0, 8) : ['—'];
+    chartPaths.data.datasets[0].data = pathValues.length ? pathValues.slice(0, 8) : [0];
+    chartPaths.update('none');
+  }
+}
+
+let sseActive = false;
+function startLiveMetrics(){
+  if (sseActive) return;
+  sseActive = true;
+  const es = new EventSource('/api/metrics/live');
+  es.onmessage = (e) => {
+    try {
+      const d = JSON.parse(e.data);
+      applyLive(d);
+    } catch {}
+  };
+  es.onerror = () => { sseActive = false; es.close(); };
+}
+
+async function clearMetrics(){
+  if (!confirm('Apagar todas as métricas de visitas?')) return;
+  const r = await api('/api/metrics', 'DELETE');
+  alert(r.data.message || 'Falha ao apagar.');
+  if (r.ok) loadMetrics();
+}
+</script>
+</body>
+</html>

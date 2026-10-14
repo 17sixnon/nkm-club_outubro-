@@ -1,0 +1,49 @@
+# Render Web Service config for HALLOWEEN NKM
+# Docs: https://render.com/docs/yaml-spec
+
+services:
+  - type: web
+    name: halloween-nkm
+    runtime: node
+    region: oregon          # ou nearest (sul america)
+    plan: free              # free tier: 25 GB/mo, 750h de build/hora
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      # Tokens de administrador (troque antes de usar em produção!)
+      - key: ADMIN_TOKEN
+        value: "NKM-ADM-Andreas17"
+      - key: ADMIN_TOKEN_2
+        value: "NKM-ADM-Gabriel18"
+      # Pix (modo manual)
+      - key: PIX_KEY
+        value: "+5541995816535"
+      - key: PIX_NAME
+        value: "NKM EVENTS"
+      - key: PIX_CITY
+        value: "CURITIBA"
+      # WhatsApp do ADM
+      - key: ADM_PHONE
+        value: "(41) 99175-6327"
+      # Preços (R$)
+      - key: TICKET_PRICE_MALE
+        value: "40.00"
+      - key: TICKET_PRICE_FEMALE
+        value: "20.00"
+      - key: PRICE_TIER2_AFTER
+        value: "100"
+      - key: TICKET_PRICE_MALE_TIER2
+        value: "50.00"
+      - key: TICKET_PRICE_FEMALE_TIER2
+        value: "25.00"
+      # Capacidade (opcional)
+      - key: MAX_TICKETS
+        value: "150"
+    buildCommand: npm install --production
+    startCommand: node server.js
+    # Health check
+    healthCheckPath: /api/config
+    # Build do git (se usar repo público) — ou descomenta para build local
+    # repo: https://github.com/seu-usuario/halloween-nkm
